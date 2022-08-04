@@ -3,20 +3,42 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='layout.css')}}">
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <title>WebAPI Art App</title>
+        <script type="text/javascript">
+            function test_ajax(){
+                var value = document.getElementById("value").value;
+                $.ajax({
+                    type:"GET",
+                    url:"/test_ajax/",
+                    data:{
+                        value:value,
+                    },
+                })
+                .done(function(data, text, jq){
+                    $("#result").html(data["result"]);
+                });
+            }
+            function test_click(){
+                $("#output").html("JQueryが使えました");
+            }
+    
+        </script>
     </head>
     <body>
         <h1>WebAPI ART APP</h1>
         <h3>🦊Welcome to small art museum🐿</h3>
         <div class="btn-gp">
-            <form action="" method="POST">
-                <input type="button" value="All" name="all">
-                <input type="button" value="Japan" name="japan">
-                <input type="button" value="France" name="france">
-                <input type="button" value="America" name="america">
-                <input type="button" value="Italy" name="italy">
-                <input type="button" value="Spain" name="spain">                
-            </form>
+            <input type="button" value="All" name="all">
+            <input type="button" value="Japan" name="japan">
+            <input id="value" type="text" value="Japan" name="japan">
+            <input type="button" value="France" name="france">
+            <input type="button" value="America" name="america">
+            <input type="button" value="Italy" name="italy">
+            <input type="button" value="Spain" name="spain">
+            <button onclick="test_ajax()">送信</button>
         </div>
+        <p>結果</p>
+        <div id="result"></div>
     </body>
 </html>
