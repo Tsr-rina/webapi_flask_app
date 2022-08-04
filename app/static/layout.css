@@ -1,0 +1,22 @@
+body {
+    background-color: black;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+h3 {
+    color: white;
+    text-align: center;
+}
+
+.btn-gp {
+    text-align: center;
+}
+.btn-gp input {
+    background-color: black;
+    color: white;
+    border: solid 2px white;
+}

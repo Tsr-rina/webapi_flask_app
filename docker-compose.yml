@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  flask_app:
+    build: .
+    ports:
+      - "8801:8801"
+    volumes:
+      - ./app:/code
