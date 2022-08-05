@@ -3,11 +3,11 @@ from flask import *
 import requests
 import random
 
-
-url = "https://fastapi-try-git-rina-7-31-tsr-rina.vercel.app/items/art/v2"
+global url
+url = "https://fastapi-try-git-rina-7-31-tsr-rina.vercel.app/items/art/v2/"
 url_japan = "https://fastapi-try-git-rina-7-31-tsr-rina.vercel.app/items/art/v2/japan"
 
-country = ['japan', 'america', 'france', 'italy', 'spain']
+country = ['japan', 'france', 'america', 'italy', 'spain']
 
 app = Flask(__name__)
 
@@ -35,24 +35,25 @@ def test_ajax():
     p_name = []
     p_kana = []
     p_exp = []
+
     a_name = []
     a_kana = []
     a_birth = []
     a_exp = []
 
     c = request.args.get("value")
-    url = url + str(c)
-    res = requests.get(url)
+    res = requests.get(url+c)
     data = json.loads(res.text)
-    for i in range(len(data[0])):
+    for i in range(1, len(data[0])+1):
         p_name.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_name'])
         p_kana.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_kana'])
-        p_exp.append(data_[0]['product_'+str(c[:1])+str(i)][0]['p_explanation'])
+        p_exp.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_explanation'])
         a_name.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_name'])
         a_kana.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_kana'])
         a_birth.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_birthday'])
         a_exp.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_info'])
-    return jsonify({"result":[p_name, p_kana, p_exp, a_name, a_kana, a_birth, a_exp]})
+    return jsonify({"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp]})
+    # return jsonify({"result":url+c})
 
 def randoms(s, e):
   n = random.randint(s, e)

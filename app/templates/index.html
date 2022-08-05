@@ -26,12 +26,12 @@
                     <p>{{ explain[i] }}</p>
                 </div>
             {% endfor %}
-            <div class="output_author", id="result_author">
+            <!-- <div class="output_author", id="result_author">
                 <h3>作者名</h3>
                 <p>カナ</p>
                 <p>誕生日</p>
                 <p>説明文</p>
-            </div>
+            </div> -->
         </div>
     </body>
     <script type="text/javascript">
@@ -45,15 +45,42 @@
                 },
             })
             .done(function(data, text, jq){
-                for (i=0; i<data["result"][0].length; i++){
-                    
+                for (i=0; i<data["product"][0].length; i++){
+                    // var div = document.createElement('div');
+                    // div.id = "result_author";
+                    // document.body.appendChild(div);
+                    var div = document.createElement('div');
+                    var name = "result_author_"+ i;
+                    div.id = name;
+                    document.body.appendChild(div);
+
+                    for (j=0; j<data["product"].length; j++){
+                        if (j == 0){
+                            var h3 = document.createElement('h3');
+                            h3.textContent = data["product"][j][i]
+                            $('#result_author').append(h3);
+                        }else if(j == 1){
+                            var p = document.createElement('p');
+                            p.textContent = data["product"][j][i]
+                            $('#result_author').append(p);
+                        }else if (j == 2){
+                            var p2 = document.createElement('p');
+                            p2.textContent = data["product"][j][i]
+                            $('#result_author').append(p2);
+                        }
+                    }
+                    var h2 = document.createElement('h2');
+                    h2.textContent = i
+                    $('#result_author').append(h2);
+
                 }
-                // $("#result_author").html(data["result"][0]);
+                // $("#result_author").html(data["result"]);
+                // {"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp]}
             });
         }
-        function test_click(){
-            $("#output").html("JQueryが使えました");
-        }
+        // function test_click(){
+        //     $("#output").html("JQueryが使えました");
+        // }
 
     </script>
 </html>

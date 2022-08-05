@@ -37,3 +37,11 @@ h3 {
 .output_author {
     color: black;
 }
+#result_author {
+    border: solid 2px greenyellow;
+    margin: 5%;
+}
+#result_author p {
+    text-align: center;
+
+}
