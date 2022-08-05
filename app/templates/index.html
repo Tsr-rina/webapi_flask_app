@@ -5,40 +5,55 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='layout.css')}}">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <title>WebAPI Art App</title>
-        <script type="text/javascript">
-            function test_ajax(){
-                var value = document.getElementById("value").value;
-                $.ajax({
-                    type:"GET",
-                    url:"/test_ajax/",
-                    data:{
-                        value:value,
-                    },
-                })
-                .done(function(data, text, jq){
-                    $("#result").html(data["result"]);
-                });
-            }
-            function test_click(){
-                $("#output").html("JQueryが使えました");
-            }
-    
-        </script>
     </head>
     <body>
         <h1>WebAPI ART APP</h1>
         <h3>🦊Welcome to small art museum🐿</h3>
         <div class="btn-gp">
-            <input type="button" value="All" name="all">
-            <input type="button" value="Japan" name="japan">
-            <input id="value" type="text" value="Japan" name="japan">
-            <input type="button" value="France" name="france">
-            <input type="button" value="America" name="america">
-            <input type="button" value="Italy" name="italy">
-            <input type="button" value="Spain" name="spain">
-            <button onclick="test_ajax()">送信</button>
+            <input type="button" value="All" onclick="test_ajax('all')">
+            <input type="button" value="japan" onclick="test_ajax('japan')">
+            <input type="button" value="France" onclick="test_ajax('france')">
+            <input type="button" value="America" onclick="test_ajax('america')">
+            <input type="button" value="Italy" onclick="test_ajax('italy')">
+            <input type="button" value="Spain" onclick="test_ajax('spain')">
         </div>
         <p>結果</p>
         <div id="result"></div>
+        <div class="output">
+            {% for i in range(5) %}
+                <div class="output_card">
+                    <h3>{{ name[i] }}({{ kana[i] }})</h3>
+                    <p>{{ explain[i] }}</p>
+                </div>
+            {% endfor %}
+            <div class="output_author", id="result_author">
+                <h3>作者名</h3>
+                <p>カナ</p>
+                <p>誕生日</p>
+                <p>説明文</p>
+            </div>
+        </div>
     </body>
+    <script type="text/javascript">
+        function test_ajax(country){
+            // var value = document.getElementById(country).value;
+            $.ajax({
+                type:"GET",
+                url:"/test_ajax/",
+                data:{
+                    value:country,
+                },
+            })
+            .done(function(data, text, jq){
+                for (i=0; i<data["result"][0].length; i++){
+                    
+                }
+                // $("#result_author").html(data["result"][0]);
+            });
+        }
+        function test_click(){
+            $("#output").html("JQueryが使えました");
+        }
+
+    </script>
 </html>
