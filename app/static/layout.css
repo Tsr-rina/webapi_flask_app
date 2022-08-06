@@ -42,3 +42,28 @@ h3 {
     text-align: center;
     border:solid 2px greenyellow;
 }
+
+#popup {
+    display: none;
+    height: 100vh;
+    width: 100%;
+    background: black;
+    opacity: 0.7;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+#content {
+    background: white;
+    padding: 30px;
+    width: 50%;
+}
+.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.country_delete {
+    display: none;
+}

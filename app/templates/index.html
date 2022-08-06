@@ -18,15 +18,14 @@
             <input type="button" value="Spain" onclick="test_ajax('spain')">
         </div>
         <div class="output">
-            {% for i in range(25) %}
-                {% if name[i] == "" %}
-                {% break %}
-                {% endif %}
+            {% for i in range( name | length) %}
                 <div class="output_card">
-                    <h3 id="p_name{{i}}">{{ name[i] }}({{ kana[i] }})</h3>
+                    <h3 id="p_name{{i}}" value="{{ name[i] }}">{{ name[i] }}</h3>
                     <p id="p_exp{{i}}">{{ explain[i] }}</p>
-                    <button><i id={{name[i]}}{{p_kana}} onclick="popup()">作者を見る</i></button>
+                    <p id="country{{i}}" class="country_delete"></p>
+                    <button onclick="popup('{{country[i]}}','{{name[i]}}')">作者を見る</i></button>
                 </div>
+
             {% endfor %}
             <!-- <div class="output_author", id="result_author">
                 <h3>作者名</h3>
@@ -34,6 +33,21 @@
                 <p>誕生日</p>
                 <p>説明文</p>
             </div> -->
+        </div>
+        <div id="popup">
+            <div id="content">
+                <h3 id="author">作者名</h3>
+
+                <label>英語表記：</label>
+                <p id="a_kana">読み仮名：</p>
+
+                <label>誕生日：</label>
+                <p id="a_birthday">誕生日：</p>
+
+                <label>生涯：</label>
+                <p id="insen">生涯：</p>
+                <button id="close">閉じる</button>
+            </div>
         </div>
     </body>
     <script type="text/javascript">
@@ -48,14 +62,6 @@
             })
             .done(function(data, text, jq){
                 for (i=0; i<(data["product"][0].length); i++){
-                    // var div = document.createElement('div');
-                    // div.id = "result_author";
-                    // document.body.appendChild(div);
-                    // var div = document.createElement('div');
-                    // var name = "result_author_"+ i;
-                    // div.id = name;
-                    // document.body.appendChild(div);
-
                     for (j=0; j<data["product"].length; j++){
                         if (j == 0){
                             write_3 = data["product"][j][i];
@@ -66,14 +72,49 @@
                             console.log(write_p)
                             $('#p_exp'+i).html("<p>"+write_p+"</p>");
                         }
+                        country = data['author'][4][i];
+                        console.log(country)
+                        $('#country'+i).html("<p>"+country+"</p>");
+
                     }
-                    // return jsonify({"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp]})
+                    // return jsonify({"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp, a_country]})
                 }
             });
         }
-        function popup(){
+        function popup(country, name){
+            $.ajax({
+                type:"GET",
+                url:"/popup_ajax/",
+                data:{
+                    name:name,
+                    country:country,
+                },
+            })
+            .done(function(data, text, jq){
+                $('#popup').addClass('show').fadeIn();
+                author = data['author'][0];
+                console.log(author)
+                $('#author').html("<h3>"+author+"</h3>");
 
+                kana = data['author'][1];
+                console.log(kana)
+                $('#a_kana').html("<p>"+kana+"</p>");
+
+                birth = data['author'][2];
+                console.log(birth)
+                $('#a_birthday').html("<p>"+birth+"</p>");
+
+                insen = data['author'][3];
+                console.log(insen)
+                $('#insen').html("<p>"+insen+"</p>");
+                //     // return jsonify({"author":[a_name, a_kana, a_birth, a_exp]})
+
+            });
         }
+        $('#close').on('click', function(){
+            $('#popup').fadeOut();
+        })
+
 
 
     </script>
