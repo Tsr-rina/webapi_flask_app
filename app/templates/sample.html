@@ -17,15 +17,14 @@
             <input type="button" value="Italy" onclick="test_ajax('italy')">
             <input type="button" value="Spain" onclick="test_ajax('spain')">
         </div>
+        <p>結果</p>
+        <div id="result"></div>
         <div class="output">
-            {% for i in range(25) %}
-                {% if name[i] == "" %}
-                {% break %}
-                {% endif %}
+            {% for i in range(5) %}
                 <div class="output_card">
-                    <h3 id="p_name{{i}}">{{ name[i] }}({{ kana[i] }})</h3>
-                    <p id="p_exp{{i}}">{{ explain[i] }}</p>
-                    <button><i id={{name[i]}}{{p_kana}} onclick="popup()">作者を見る</i></button>
+                    <h3 id="p_name">{{ name[i] }}({{ kana[i] }})</h3>
+                    <p id="p_exp">{{ explain[i] }}</p>
+                    <i id={{name[i]}}{{p_kana}} onclick="popup()">作者を見る</i>
                 </div>
             {% endfor %}
             <!-- <div class="output_author", id="result_author">
@@ -47,7 +46,7 @@
                 },
             })
             .done(function(data, text, jq){
-                for (i=0; i<(data["product"][0].length); i++){
+                for (i=1; i<(data["product"][0].length)+1; i++){
                     // var div = document.createElement('div');
                     // div.id = "result_author";
                     // document.body.appendChild(div);
@@ -58,13 +57,17 @@
 
                     for (j=0; j<data["product"].length; j++){
                         if (j == 0){
-                            write_3 = data["product"][j][i];
-                            console.log(write_3)
-                            $('#p_name'+i).html("<h3>"+write_3+"</h3>");
-                        }else if(j == 2){
-                            write_p = data["product"][j][i];
-                            console.log(write_p)
-                            $('#p_exp'+i).html("<p>"+write_p+"</p>");
+                            var h3 = document.createElement('h3');
+                            write = data["product"][j][i];
+                            $('#p_name').html("<h3>"+write+"</h3>");
+                        }else if(j == 1){
+                            var p = document.createElement('p');
+                            p.textContent = data["product"][j][i];
+                            $('#result_author_'+i).append(p);
+                        }else if (j == 2){
+                            var p2 = document.createElement('p');
+                            p2.textContent = data["product"][j][i];
+                            $('#result_author_'+i).append(p2);
                         }
                     }
                     // return jsonify({"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp]})

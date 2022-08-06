@@ -40,19 +40,40 @@ def test_ajax():
     a_kana = []
     a_birth = []
     a_exp = []
-
     c = request.args.get("value")
-    res = requests.get(url+c)
-    data = json.loads(res.text)
-    for i in range(1, len(data[0])+1):
-        p_name.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_name'])
-        p_kana.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_kana'])
-        p_exp.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_explanation'])
-        a_name.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_name'])
-        a_kana.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_kana'])
-        a_birth.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_birthday'])
-        a_exp.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_info'])
-    return jsonify({"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp]})
+    if c == "all":
+        res = requests.get(url)
+        data_all = json.loads(res.text)
+
+        for i in range(len(data_all)):
+    
+            # indexs = i-1
+            c_m = country[i]
+
+            for j in range(1, len(data_all[country[i]][0])+1):
+                
+                p_name.append(data_all[country[i]][0]['product_'+str(c_m[:1])+str(j)][0]['p_name'])
+                p_kana.append(data_all[country[i]][0]['product_'+str(c_m[:1])+str(j)][0]['p_kana'])
+                p_exp.append(data_all[country[i]][0]['product_'+str(c_m[:1])+str(j)][0]['p_explanation'])
+                a_name.append(data_all[country[i]][0]['product_'+str(c_m[:1])+str(j)][0]['author'][0]['a_name'])
+                a_kana.append(data_all[country[i]][0]['product_'+str(c_m[:1])+str(j)][0]['author'][0]['a_kana'])
+                a_birth.append(data_all[country[i]][0]['product_'+str(c_m[:1])+str(j)][0]['author'][0]['a_birthday'])
+                a_exp.append(data_all[country[i]][0]['product_'+str(c_m[:1])+str(j)][0]['author'][0]['a_info'])
+
+        return jsonify({"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp]})
+        
+    else:
+        res = requests.get(url+c)
+        data = json.loads(res.text)
+        for i in range(1, len(data[0])+1):
+            p_name.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_name'])
+            p_kana.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_kana'])
+            p_exp.append(data[0]['product_'+str(c[:1])+str(i)][0]['p_explanation'])
+            a_name.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_name'])
+            a_kana.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_kana'])
+            a_birth.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_birthday'])
+            a_exp.append(data[0]['product_'+str(c[:1])+str(i)][0]['author'][0]['a_info'])
+        return jsonify({"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp]})
     # return jsonify({"result":url+c})
 
 def randoms(s, e):
