@@ -10,20 +10,20 @@
         <h1>WebAPI ART APP</h1>
         <h3>🦊Welcome to small art museum🐿</h3>
         <div class="btn-gp">
-            <input type="button" value="All" onclick="test_ajax('all')">
-            <input type="button" value="japan" onclick="test_ajax('japan')">
-            <input type="button" value="France" onclick="test_ajax('france')">
-            <input type="button" value="America" onclick="test_ajax('america')">
-            <input type="button" value="Italy" onclick="test_ajax('italy')">
-            <input type="button" value="Spain" onclick="test_ajax('spain')">
+            <!-- <input type="button" value="All" onclick="test_ajax('all')"> -->
+            <input id="japan" type="button" value="Japan" onclick="test_ajax('japan')">
+            <input id="france" type="button" value="France" onclick="test_ajax('france')">
+            <input id="america" type="button" value="America" onclick="test_ajax('america')">
+            <input id="italy" type="button" value="Italy" onclick="test_ajax('italy')">
+            <input id="spain" type="button" value="Spain" onclick="test_ajax('spain')">
         </div>
         <div class="output">
             {% for i in range( name | length) %}
                 <div class="output_card">
                     <h3 id="p_name{{i}}" value="{{ name[i] }}">{{ name[i] }}</h3>
                     <p id="p_exp{{i}}">{{ explain[i] }}</p>
-                    <p id="country{{i}}" class="country_delete"></p>
-                    <button onclick="popup('{{country[i]}}','{{name[i]}}')">作者を見る</i></button>
+                    <p id="country{{i}}" class="country_delete">{{ country[i] }}</p>
+                    <button id= "look" onclick="popup('{{i}}')">作者を見る</i></button>
                 </div>
 
             {% endfor %}
@@ -35,24 +35,58 @@
             </div> -->
         </div>
         <div id="popup">
-            <div id="content">
-                <h3 id="author">作者名</h3>
+            <div id="window">
+                <div id="content">
+                    <h3 id="author">作者名</h3>
+    
+                    <label>英語表記</label>
+                    <p id="a_kana">読み仮名：</p>
+                    <br>
 
-                <label>英語表記：</label>
-                <p id="a_kana">読み仮名：</p>
+                    <label>出身地</label>
+                    <p id="a_from">出身地：</p>
+                    <br>
 
-                <label>誕生日：</label>
-                <p id="a_birthday">誕生日：</p>
+                    <label>誕生日</label>
+                    <p id="a_birthday">誕生日：</p>
+                    <br>
 
-                <label>生涯：</label>
-                <p id="insen">生涯：</p>
-                <button id="close">閉じる</button>
+                    <label>生涯</label>
+                    <p id="insen">生涯：</p>
+
+
+                    <div id="close_button">
+                        <button id="close">閉じる</button>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
     <script type="text/javascript">
+        var c_array = ['japan', 'france', 'america', 'italy', 'spain']
+
+        // function change_border(country){
+            
+        //     for (i=0; i<(c_array.length); i++){
+
+        //         if (country == c_array[i]){
+        //             $('#'+country).css({'border-bottom':'solid 2px orange'});
+        //             console.log(country+"と"+c_array[i]+"はorange")
+        //         }else{
+        //             $('#'+country).css({'border-bottom':'solid 2px gray'});
+        //             console.log(country+"と"+c_array[i]+"はgray")
+        //         }
+
+        //     }
+
+        // }
+        
+
         function test_ajax(country){
             // var value = document.getElementById(country).value;
+            // console.log("c_arrayの長さ："+c_array.length)
+            // change_border(country)
+
             $.ajax({
                 type:"GET",
                 url:"/test_ajax/",
@@ -81,7 +115,10 @@
                 }
             });
         }
-        function popup(country, name){
+
+        function popup(number){
+            var name = $("#p_name"+number).text();
+            var country = $('#country'+number).text();
             $.ajax({
                 type:"GET",
                 url:"/popup_ajax/",
@@ -92,6 +129,8 @@
             })
             .done(function(data, text, jq){
                 $('#popup').addClass('show').fadeIn();
+                $('#content').css({'background':'white'});
+
                 author = data['author'][0];
                 console.log(author)
                 $('#author').html("<h3>"+author+"</h3>");
@@ -107,13 +146,56 @@
                 insen = data['author'][3];
                 console.log(insen)
                 $('#insen').html("<p>"+insen+"</p>");
-                //     // return jsonify({"author":[a_name, a_kana, a_birth, a_exp]})
+
+                from = data['author'][4];
+                console.log(from)
+                $('#a_from').html("<p>"+from+"</p>");
+                //     // return jsonify({"author":[a_name, a_kana, a_birth, a_exp, a_from]})
 
             });
         }
         $('#close').on('click', function(){
             $('#popup').fadeOut();
         })
+
+        $('#japan').on('click', function(){
+            $('#japan').css({'border-bottom':'solid 2px orange'});
+            $('#america').css({'border-bottom':'solid 2px gray'});
+            $('#france').css({'border-bottom':'solid 2px gray'});
+            $('#italy').css({'border-bottom':'solid 2px gray'});
+            $('#spain').css({'border-bottom':'solid 2px gray'});
+        })
+
+        $('#america').on('click', function(){
+            $('#america').css({'border-bottom':'solid 2px orange'});
+            $('#japan').css({'border-bottom':'solid 2px gray'});
+            $('#france').css({'border-bottom':'solid 2px gray'});
+            $('#italy').css({'border-bottom':'solid 2px gray'});
+            $('#spain').css({'border-bottom':'solid 2px gray'});
+        })
+
+        $('#france').on('click', function(){
+            $('#france').css({'border-bottom':'solid 2px orange'});
+            $('#america').css({'border-bottom':'solid 2px gray'});
+            $('#japan').css({'border-bottom':'solid 2px gray'});
+            $('#italy').css({'border-bottom':'solid 2px gray'});
+            $('#spain').css({'border-bottom':'solid 2px gray'});
+        })
+        $('#italy').on('click', function(){
+            $('#italy').css({'border-bottom':'solid 2px orange'});
+            $('#america').css({'border-bottom':'solid 2px gray'});
+            $('#france').css({'border-bottom':'solid 2px gray'});
+            $('#japan').css({'border-bottom':'solid 2px gray'});
+            $('#spain').css({'border-bottom':'solid 2px gray'});
+        })
+        $('#spain').on('click', function(){
+            $('#spain').css({'border-bottom':'solid 2px orange'});
+            $('#america').css({'border-bottom':'solid 2px gray'});
+            $('#france').css({'border-bottom':'solid 2px gray'});
+            $('#italy').css({'border-bottom':'solid 2px gray'});
+            $('#japan').css({'border-bottom':'solid 2px gray'});
+        })
+
 
 
 
