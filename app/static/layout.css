@@ -1,5 +1,7 @@
 body {
     background-color: white;
+    height: 100%;
+
 }
 
 h1 {
@@ -19,7 +21,10 @@ h3 {
     background-color: white;
     color: black;
     border: solid 2px white;
+    margin: 0.5%;
+    border-bottom: solid 2px gray;
 }
+
 #result {
     color: black;
 }
@@ -27,12 +32,14 @@ h3 {
 .output {
     text-align: center;
     color: black;
-    border: solid 5px blue;
-    margin: 5%;
+    /* border: solid 5px blue; */
+
+    padding: 10%;
 }
 .output_card {
     color: black;
     border: solid 3px orange;
+    margin: 3%;
 }
 .output_author {
     color: black;
@@ -42,22 +49,53 @@ h3 {
     text-align: center;
     border:solid 2px greenyellow;
 }
+#look {
+    margin: 3%;
+    background-color: white;
+    color: black;
+}
 
 #popup {
     display: none;
+    position: fixed;
     height: 100vh;
     width: 100%;
-    background: black;
-    opacity: 0.7;
-    position: fixed;
+    background: rgba(0, 0, 0, .5);
     top: 0;
     left: 0;
+    z-index: 1000;   
 }
 #content {
-    background: white;
-    padding: 30px;
-    width: 50%;
+	display: inline-block;
+	position: fixed;
+	width: 50%;
+    height: 80%;
+	z-index: 1100;
+	background: #fff;
+	padding: 40px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	overflow-y: scroll;
 }
+#content label {
+    font-weight: bold;
+}
+#close_button {
+    text-align: center;
+}
+
+#content h3 {
+    text-align: left;
+    background: linear-gradient(transparent 70%, pink 70%);
+}
+
+#close {
+    background: white;
+    color: black;
+    text-align: center;
+}
+
 .show {
     display: flex;
     justify-content: center;
