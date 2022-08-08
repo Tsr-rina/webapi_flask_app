@@ -45,7 +45,7 @@ def get_random(data_all):
 
 
 
-def get_p(data):
+def get_p(data, c):
     p_name = []
     p_kana = []
     p_exp = []
@@ -57,7 +57,8 @@ def get_p(data):
     
     return p_name, p_kana, p_exp
 
-def get_a(data):
+
+def get_a(data, c):
     a_name = []
     a_kana = []
     a_birth = []
@@ -84,9 +85,9 @@ def test_ajax():
     res = requests.get(url+c)
     data = json.loads(res.text)
 
-    p_name, p_kana, p_exp = get_p(data)
+    p_name, p_kana, p_exp = get_p(data, c)
 
-    a_name, a_kana, a_birth, a_exp, a_country = get_a(data)
+    a_name, a_kana, a_birth, a_exp, a_country = get_a(data, c)
 
 
     return jsonify({"product":[p_name, p_kana, p_exp], "author":[a_name, a_kana, a_birth, a_exp ,a_country]})
@@ -107,18 +108,21 @@ def popup():
     res = requests.get(url + country)
     data = json.loads(res.text)
 
-    name_array, kana_array, birth_array, exp_array, country_array = get_a(data)
+    name_array, kana_array, birth_array, exp_array, country_array = get_a(data, country)
 
 
     for i in range(1, len(data[0])+1):
+        
         tmp = data[0]['product_'+str(country[:1])+str(i)][0]['p_name']
 
         if tmp == name:
-            a_name = data[0]['product_'+str(country[:1])+str(i)][0]['author'][0]['a_name']
-            a_kana = data[0]['product_'+str(country[:1])+str(i)][0]['author'][0]['a_kana']
-            a_birth = data[0]['product_'+str(country[:1])+str(i)][0]['author'][0]['a_birthday']
-            a_exp = data[0]['product_'+str(country[:1])+str(i)][0]['author'][0]['a_info']
-            a_from = translate(data[0]['product_'+str(country[:1])+str(i)][0]['author'][0]['a_from'])
+            a_name = name_array[i-1]
+            a_kana = kana_array[i-1]
+            a_birth = birth_array[i-1]
+            a_exp = exp_array[i-1]
+            a_from = country_array[i-1]
+        
+
 
     return jsonify({"author":[a_name, a_kana, a_birth, a_exp, a_from]})
 
